@@ -1,0 +1,26 @@
+What is c#?
+
+It's a modern object oriented programming language. Very similar to Javascript,
+Java, and C++. Designed by Microsoft. Used for making all kinds of things like
+web and desktop applications, games, APIs, mobile apps, etc.
+
+    - C# is the most popular language for .NET development
+
+
+What is .NET?
+A framework/platform that C# runs on.
+.NET provides:
+    - A runtime -- the engine that actually executes your code
+    - A massive library of pre-built tools -- so you don't have to write everything
+      from scratch (things like reading files, making web reqs, handling dates, etc.)
+    - Compilers and Build tools -- that turn your C# code into something your computer
+      can actually run
+
+(Analogy: C# is like the language you speak, .NET is the infrastructure that understands and carries out what you're saying)
+
+Different flavors of .NET:
+    1. .NET - The modern, current version -- cross platform (Windows, Max, Linux)
+    2. .NET Framework - The older, Windows-only version -- legacy, widely used still
+    3. .NET Core - Microsoft's first cross-platform attempt - now just called ".NET"
+
+    (Definitely start with modern .NET either 8 or 9)
