@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\aidan\\Source\\Repos\\csharp\\HelloWorld\\HelloWorld.csproj",
+      "projectUniqueName": "C:\\Users\\aidan\\source\\repos\\csharp\\basics\\HelloWorld.csproj",
       "projectName": "HelloWorld",
-      "projectPath": "C:\\Users\\aidan\\Source\\Repos\\csharp\\HelloWorld\\HelloWorld.csproj",
+      "projectPath": "C:\\Users\\aidan\\source\\repos\\csharp\\basics\\HelloWorld.csproj",
       "packagesPath": "C:\\Users\\aidan\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\aidan\\Source\\Repos\\csharp\\HelloWorld\\obj\\",
+      "outputPath": "C:\\Users\\aidan\\source\\repos\\csharp\\basics\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
