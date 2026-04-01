@@ -24,3 +24,18 @@ Different flavors of .NET:
     3. .NET Core - Microsoft's first cross-platform attempt - now just called ".NET"
 
     (Definitely start with modern .NET either 8 or 9)
+
+
+What components make up the .NET framework/platform?
+
+    1. CLR (Common Language Runtime):
+        - The heart of the framework acting as a virtual machine that runs code and
+          manages various services (memory management, security, thread mngment, etc.)
+
+        - Code compiled and executed within the CLR is called "Managed Code". Code
+          outside of the CLR's management is called "Unmanaged Code"
+
+    2. FCL (.NET Framework Class Library)
+        - Provides a large set of reusable classes and methods for app developement
+        - Includes libraries for input/output operations, networking, data access,
+          UI controls, and more.
