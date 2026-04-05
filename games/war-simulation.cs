@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
 
 public class Card
 {
@@ -207,12 +206,13 @@ public class Game
 		else
 			Console.WriteLine($"\n{player1.Name} wins!");
 		Console.WriteLine($"\n----Game Summary ({_rounds.Count} rounds) ----\n");
+		
+		_rounds.ExportToJson("rounds.json"); //export round data to JSON file
 		_rounds.PrintAll();
 	}
 	
 	private int PlayRound(int rounds)
 	{
-
 		//--------Data Collected---------
 		int roundnumber = rounds;
 		string winner = "";
@@ -388,6 +388,32 @@ public class RoundLinkedList
 	private RoundNode _tail; //last node
 	public int Count { get; private set; }
 	
+	public void ExportToJson(string filename)
+	{
+		System.Text.StringBuilder sb = new System.Text.StringBuilder();
+		sb.AppendLine("[");
+		
+		RoundNode current = _head;
+		while(current != null)
+		{
+			Round r = current.Data;
+			sb.AppendLine("  {");
+			sb.AppendLine($"    \"roundNumber\": {r.RoundNumber},");
+			sb.AppendLine($"    \"player1Card\": \"{r.Player1Card.Rank}\",");
+			sb.AppendLine($"    \"player2Card\": \"{r.Player2Card.Rank}\",");
+			sb.AppendLine($"    \"winner\": \"{r.Winner}\",");
+			sb.AppendLine($"    \"warCount\": {r.WarCount},");
+			sb.AppendLine($"    \"potSize\": {r.PotSize}");
+			sb.Append(current.Next != null ? "  }," : "  }");
+			sb.AppendLine();
+			current = current.Next;
+		}
+		
+		sb.AppendLine("]");
+		System.IO.File.WriteAllText(filename, sb.ToString());
+		Console.WriteLine($"Exported {Count} rounds to {filename}");
+	}
+	
 	//linkedlist constructor
 	public RoundLinkedList()
 	{
@@ -424,9 +450,8 @@ public class RoundLinkedList
 			current = current.Next; 
 		}
 	}
-	
 }
-	
+
 //-----------------------------------------------------------------------------------------------------
 public class Program
 {
