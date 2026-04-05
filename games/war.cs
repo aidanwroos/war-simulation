@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 public class Card
 {
@@ -103,7 +104,7 @@ public class Deck
 public class Player
 {
 	private string _name;
-	private List<Card> _hand;
+	private Queue<Card> _hand;
 	
 	//player name property (getters and setters essentially)
 	public string Name
@@ -118,23 +119,35 @@ public class Player
 	}
 	
 	//player hand property
-	public List<Card> Hand
+	public Queue<Card> Hand
 	{
 		get {return _hand;}
+	}
+	
+	//removes card and returns from the front automatically
+	public Card flipCard()
+	{	
+		return _hand.Dequeue(); 
 	}
 	
 	//player constructor
 	public Player(string name)
 	{
 		Name = name;
-		_hand = new List<Card>();
+		_hand = new Queue<Card>();
 		Console.WriteLine($"Player with name {name} created!");
 	}
 	
 	//draw card method
-	public void DrawCard(Card card)
+	public void AddCard(Card card)
 	{
-		_hand.Add(card);
+		_hand.Enqueue(card);
+	}
+	
+	//return card count in player's hand
+	public int CardCount
+	{
+		get { return _hand.Count; }
 	}
 	
 	//display cards in player's hand
@@ -142,10 +155,8 @@ public class Player
 	{
 		Console.WriteLine("\n" + Name + "\'s hand:");  
 						  
-		for(int i=0; i < _hand.Count; i++)
-		{
-			Console.WriteLine($"{_hand[i].ToString()}");
-		}
+		foreach(Card card in _hand)
+			Console.WriteLine(card);
 	}
 	
 	
@@ -170,23 +181,118 @@ public class Game
 	{
 		for(int i=0; i < 26; i++)
 		{
-			player1.DrawCard(_deck.Deal());
-			player2.DrawCard(_deck.Deal());
+			player1.AddCard(_deck.Deal());
+			player2.AddCard(_deck.Deal());
 		}
 	}
 	
 	public void Start()
 	{
-		int flag = 0; //no winners initially
-		while(flag != 1)
+		int rounds = 0;
+		while(player1.CardCount > 0 && player2.CardCount > 0)
 		{
-			flag = PlayRound();
+			PlayRound(rounds);
+			rounds += 1; //increment number of rounds played (excluding war sub-rounds)
+			
 		}
+		DeclareWinner();
 	}
 	
-	private int PlayRound()
+	public void DeclareWinner()
 	{
-		//each player draws a single card
+		if(player1.CardCount == 0)
+			Console.WriteLine($"\n{player2.Name} wins!");
+		else
+			Console.WriteLine($"\n{player1.Name} wins!");
+	}
+	
+	private int PlayRound(int rounds)
+	{
+		Card card_player1, card_player2;
+	
+		//each player draws 1 card from top of their hand
+		card_player1 = player1.flipCard();
+		card_player2 = player2.flipCard();
+		
+		Console.WriteLine($"\n--------------Round:[{rounds}]----------------------");
+		Console.WriteLine($"Player 1 card: {card_player1.ToString()}");
+		Console.WriteLine($"Player 2 card: {card_player2.ToString()}\n");
+		
+		if(card_player1.Value > card_player2.Value)
+		{
+			player1.AddCard(card_player1);
+			player1.AddCard(card_player2);
+			Console.WriteLine("Player 1 wins the round!");
+		}
+		else if (card_player1.Value < card_player2.Value)
+		{
+			player2.AddCard(card_player2);
+			player2.AddCard(card_player1);
+			Console.WriteLine("Player 2 wins the round!");
+		}
+		else //war situation
+		{
+			Console.WriteLine("WAR!!\n");
+			
+			List<Card> JackPot = new List<Card>(); //combined jackpot
+			JackPot.Add(card_player1);
+			JackPot.Add(card_player2);
+			
+			bool warOver = false;
+			while(!warOver)
+			{
+				//first check if each player even has enough cards to do war with
+				if(player1.CardCount < 4)
+				{
+					Console.WriteLine($"{player2.Name} wins the war - {player1.Name} doesn't have enough cards!");
+					foreach (Card c in JackPot) player2.AddCard(c);
+					return 0;
+				}
+				if(player2.CardCount < 4)
+				{
+					Console.WriteLine($"{player1.Name} wins the war - {player2.Name} doesn't have enough cards!");
+					foreach (Card c in JackPot) player1.AddCard(c);
+					return 0;
+				}
+				
+				//each player draws 3 cards from their hand, and adds them to the pot
+				Console.WriteLine("Each player draws 3 cards and adds to the pot...");
+				for (int i=0; i < 3; i++)
+				{
+					JackPot.Add(player1.flipCard());
+					JackPot.Add(player2.flipCard());
+				}
+				
+				Card warCard1, warCard2;
+				warCard1 = player1.flipCard();
+				warCard2 = player2.flipCard();
+				JackPot.Add(warCard1);
+				JackPot.Add(warCard2);
+				
+				//show each player's war cards
+				Console.WriteLine($"{player1.Name} war card: {warCard1}");
+				Console.WriteLine($"{player2.Name} war card: {warCard2}");
+				
+				if (warCard1.Value > warCard2.Value)
+				{
+					Console.WriteLine($"{player1.Name} wins the war and takes {JackPot.Count} cards from the pot!");
+					foreach(Card c in JackPot) player1.AddCard(c);
+					warOver = true;
+				}
+				else if (warCard2.Value > warCard1.Value)
+				{
+					Console.WriteLine($"{player2.Name} wins the war and takes {JackPot.Count} cards from the pot!");
+					foreach(Card c in JackPot) player2.AddCard(c);
+					warOver = true;
+				}
+				else
+				{
+					Console.WriteLine("WAR AGAIN!!"); //tied, run another war
+				}
+			}
+		}
+		Console.WriteLine("----------------------------------------------");
+		
 		//compare both player's cards
 			//if the cards have the same values:
 				//1. each player draws 3 cards and returns the 4th card
@@ -196,11 +302,71 @@ public class Game
 			//whoever's card's value is smallest:
 				//give other player all cards drawn in the round
 		
-		return 0; //default
+		return 0;
 	}
 }
 
+//[Structuring the simulation results here:]
+//-----------------------------------------------------------------------------------------------------
 
+//Structure holding information for a single round
+public class Round
+{
+	public int RoundNumber { get; set;}
+	public Card Player1Card { get; set; }
+	public Card Player2Card { get; set; }
+	public string Winner { get; set; }
+	public int WarCount { get; set; }
+	public int PotSize { get; set; }
+	
+	//constructor
+	public Round(int roundNum, Card p1Card, Card p2Card, string winner, int wCount, int potSize)
+	{
+		//(data being collected from each round)
+		RoundNumber = roundNum;  //round number
+		Player1Card = p1Card;    //player1's card
+		Player2Card = p2Card;    //player2's card
+		Winner = winner;         //name of winner
+		WarCount = wCount;       //number of war rounds
+		PotSize = potSize;       //number of cards in pot
+	}
+	
+	//to easily display the round data if we want to
+	public override string ToString()
+	{
+		return $"Round: {RoundNumber}, P1 card: {Player1Card.ToString()}, P2 card: {Player2Card.ToString()}, Winner: {Winner}, PotSize: {PotSize}, War Count: {WarCount}"; 
+	}
+}
+
+//A single node, holding 1 round and its information
+public class RoundNode
+{
+	public Round Data { get; set; }
+	public RoundNode Next { get; set; }
+	
+	//RoundNode constructor
+	public RoundNode(Round data)
+	{
+		Data = data;
+		Next = null; //no next node by default
+	}
+}
+
+public class RoundLinkedList
+{
+	private RoundNode _head; //first node in the RoundLinkedList
+	private RoundNode _tail; //last node
+	public int Count { get; private set; }
+
+	public RoundLinkedList()
+	{
+		_head = null;
+		_tail = null;
+		Count = 0;
+	}
+}
+	
+//-----------------------------------------------------------------------------------------------------
 public class Program
 {
 	public static void Main()
