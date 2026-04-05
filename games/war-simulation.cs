@@ -206,6 +206,8 @@ public class Game
 			Console.WriteLine($"\n{player2.Name} wins!");
 		else
 			Console.WriteLine($"\n{player1.Name} wins!");
+		Console.WriteLine($"\n----Game Summary ({_rounds.Count} rounds) ----\n");
+		_rounds.PrintAll();
 	}
 	
 	private int PlayRound(int rounds)
