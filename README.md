@@ -15,9 +15,9 @@ A simulation of the two-player card game War written in C#. This program simulat
 |War rate | 6.8% |
 |Largest pot| 34 cards|
 
-|Wins | {'Aidan': 181070, 'Computer': 181074} |
-|Pot distribution | {2: 338726, 10: 21866, 18: 1444, 26: 106, 34: 2} |
-|War count distribution |{0: 337664, 1: 22786, 2: 1571, 3: 118, 4: 5} |
+Wins {'Aidan': 181070, 'Computer': 181074}
+Pot distribution {2: 338726, 10: 21866, 18: 1444, 26: 106, 34: 2}
+War count distribution |{0: 337664, 1: 22786, 2: 1571, 3: 118, 4: 5}
 
 ## How the simulation works
 - A 52 card deck is shuffled and dealt between two players (each player's hand having 26 cards)
@@ -38,3 +38,4 @@ A simulation of the two-player card game War written in C#. This program simulat
 - navigate to \games directory
 - run "dotnet run"
 - run "python parser.py" on newly created json file
+- view sim results
