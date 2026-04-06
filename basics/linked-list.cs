@@ -57,15 +57,24 @@ class Program
             Console.WriteLine("null");
         }
 
+        public void MergeSort(LinkedList<T> list)
+        {
+
+        }
+
     }
 
     static void Main()
     {
         var ll = new LinkedList<int>(); //linkedlist object of type 'int'
-        
-        for (int i = 0; i < 20; i++)
+
+        //unsorted array
+        int[] arr = {45, 12, 78, 3, 56, 89, 23, 67, 34, 11};
+
+        Console.Write("Original: ");
+        for(int i=0; i<arr.Length;i++)
         {
-            ll.AppendLast(i);
+            ll.AppendLast(arr[i]);
         }
 
         ll.PrintList();
