@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("game-of-war-sim")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+df9bfe7fae4c8f28dacd1251f66c0d353cc5b864")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b30c7981decfd1230a27625a0dfc577045a8121e")]
 [assembly: System.Reflection.AssemblyProductAttribute("game-of-war-sim")]
 [assembly: System.Reflection.AssemblyTitleAttribute("game-of-war-sim")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
