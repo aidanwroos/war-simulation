@@ -46,7 +46,7 @@ A simulation of the two-player card game War written in C#. This program simulat
 - War continues until a player wins the pot and the game returns to its normal state
 - The player who collects all 52 cards from the deck wins.
 - Round simulation data is stored in a custom linked list and formatted/exported to a round.json file
-- The parse.py python script analyzes the json file containing the rounds and each round's data
+- The parse.py python script analyzes the json file containing the rounds and their data
 
 ## Technologies involved
 - C# using OOP paradigm
